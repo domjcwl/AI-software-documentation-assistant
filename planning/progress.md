@@ -2,10 +2,55 @@
 
 Update at the end of every working session. Newest entry on top.
 
-**Current phase:** Phases 1-5 complete — full stack integrated and working end to end.
+**Current phase:** Phases 1-5 and 7 complete. **Phase 6 (hardening) was explicitly skipped**
+at the user's direction, as were T8.4 (rehearsed demo) and T8.5 (clean-clone verification).
 **Overall:** paste a GitHub URL into the Streamlit UI, watch it index, then ask questions and
 get streamed answers with verified file:line citations. Frontend → FastAPI → LangGraph agents
-→ OpenAI → Chroma, all wired and verified live.
+→ OpenAI → Chroma, all wired and verified live, and documented with real screenshots.
+
+---
+
+## 2026-08-02 (late) — Phase 7: documentation
+
+**Done** — T8.1, T8.2, T8.3. Phase 6 skipped by instruction; T8.4/T8.5 not required.
+
+- **T8.1 README** — added a Screenshots section and embedded the generated LangGraph
+  diagram. Setup/env/run/limitations were already written during integration; verified
+  every referenced path resolves and that the "120 tests" claim still holds (it does).
+- **T8.2 Screenshots** — four, all captured from the running app against a real indexed
+  repo (`psf/requests`, 94 files / 729 chunks), in `docs/screenshots/`:
+  `indexing-progress.png` (a real index at 69%), `agents-working.png` (phase indicator plus
+  the sources panel rendered *before* any answer text), `streaming-answer.png` (mid-stream,
+  cursor visible, citations inline), `citations-expanded.png` (sources open, similarity
+  0.53/0.54 with real line ranges). No mock-ups.
+- **T8.3** — this entry.
+
+**Tooling note that unblocked T8.2.** Headless screenshots of this app had failed for most
+of the project: Edge's `--screenshot` fires at the page-load event and then exits, which for
+a websocket-driven SPA captures Streamlit's loading skeleton. `--virtual-time-budget` helps
+but fast-forwards timers while real network I/O still takes real time, so it is racy — and
+`--dump-dom` returns 0 bytes in this Edge build. The fix was to drive Edge over the DevTools
+Protocol instead (`websockets` is already a dependency): navigate, poll until a CSS selector
+actually has non-zero height, *then* capture. That also made it possible to script real
+interactions — click a suggestion, wait, expand the sources panel — which is the only way to
+photograph states like "answer streaming" or "citations expanded", since Streamlit session
+state is per browser session and a fresh page load starts empty. Scripts live in the
+scratchpad, not the repo; if these screenshots need refreshing, the approach is worth
+rebuilding rather than fighting `--screenshot` again.
+
+**Observation, not fixed** (belongs to the skipped Phase 6): for *"How does authentication
+work?"* on `psf/requests`, the Coordinator routes to `architecture`, and
+`_ensure_manifest_context` prepends `__repo_summary__`/`__file_index__` to the results
+unconditionally. Those forced chunks scored 0.10–0.15 while a genuinely relevant
+`src/requests/auth.py` chunk scored 0.49 — so weak context leads both the citation panel and
+the prompt. The forcing is deliberate (architecture.md §4.3), but "prepend regardless of
+score" is cruder than it needs to be; interleaving by score, or only forcing when nothing
+above the relevance floor was found, would likely be better. Worth revisiting if answer
+quality is ever tuned.
+
+**Still open** (unchanged): `GET /projects/{id}/file`, the `truncated` coverage warning in
+the UI, per-request token/cost accounting, `?force=true` re-index, and `git init` — the
+project is still not under version control.
 
 ---
 

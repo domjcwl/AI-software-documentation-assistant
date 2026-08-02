@@ -145,7 +145,13 @@ Checklist form. `[ ]` open · `[~]` in progress · `[x]` done. Mirror status cha
 - [x] T6.14 Missing-API-key banner from `/health`
 - [ ] T6.15 `truncated: true` coverage warning — backend reports it, UI does not surface it yet
 
-## 7. Hardening (Phase 6) — adversarial checklist
+## 7. Hardening (Phase 6) — SKIPPED by instruction (2026-08-02)
+
+> Deliberately not done, not forgotten. Several items here are already covered
+> incidentally by other work (typed errors from Phase 0, the failure-cleanup path in
+> `pipeline.py`, the `low_confidence` fallback), but the list below was never worked
+> through systematically. See progress.md for one concrete retrieval-quality issue
+> observed during Phase 7 that would belong here.
 
 - [ ] T7.1 Invalid URL / non-GitHub URL / typo'd owner
 - [ ] T7.2 Private repo (404) and deleted repo
@@ -163,13 +169,17 @@ Checklist form. `[ ]` open · `[~]` in progress · `[x]` done. Mirror status cha
 - [ ] T7.14 Very long question / very long file → token caps hold
 - [ ] T7.15 Per-request token usage logged
 
-## 8. Docs & demo (Phase 7)
+## 8. Docs & demo (Phase 7) — done (2026-08-02)
 
-- [ ] T8.1 Root `README.md` — setup, env, run commands, diagram, limitations
-- [ ] T8.2 Screenshots: indexing progress, streaming answer, expanded citations
-- [ ] T8.3 Finalize `planning/progress.md`
-- [ ] T8.4 Rehearse demo: one question per route + one deliberate error
-- [ ] T8.5 Clean-clone verification on a fresh venv
+- [x] T8.1 Root `README.md` — setup, env, run commands, generated LangGraph diagram,
+  screenshots, troubleshooting, limitations. All referenced paths verified to resolve.
+- [x] T8.2 Screenshots in `docs/screenshots/`, all captured from the running app against a
+  real indexed repo (`psf/requests`), never mocked up: indexing progress (69%, live),
+  agents working (phase indicator + sources before tokens), streaming answer (cursor
+  visible, inline citations), citations expanded (similarity 0.53/0.54, real line ranges)
+- [x] T8.3 Finalize `planning/progress.md`
+- [~] T8.4 Rehearse demo — **not required** (user instruction)
+- [~] T8.5 Clean-clone verification on a fresh venv — **not required** (user instruction)
 
 ---
 

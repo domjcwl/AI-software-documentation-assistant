@@ -9,6 +9,33 @@ project's file directory."*
 
 ---
 
+## Screenshots
+
+All captured from the running app against a real indexed repository
+(`psf/requests` — 94 files, 729 chunks). Nothing here is a mock-up.
+
+**Indexing runs in the background with live progress**
+
+![Indexing progress](docs/screenshots/indexing-progress.png)
+
+**The agents report what they're doing, and sources appear before the answer**
+
+![Agents working](docs/screenshots/agents-working.png)
+
+That ordering is a contract guarantee, not a coincidence: `sources` is emitted
+before any `token`, so the citation panel is populated while the answer is still
+being written.
+
+**The answer streams in, citing files inline as it goes**
+
+![Streaming answer](docs/screenshots/streaming-answer.png)
+
+**Every claim traces back to real code, with similarity scores and line ranges**
+
+![Expanded citations](docs/screenshots/citations-expanded.png)
+
+---
+
 ## Stack
 
 | Layer | Choice |
@@ -98,11 +125,11 @@ is never half-indexed.
 
 `POST /chat` streams NDJSON from a four-agent LangGraph pipeline:
 
-```
-coordinator ─┬─ retrieval ─┬─ explanation ── review ─┬─ done
-             ├─ directory ─┘                         └─ retrieval (revise, max 2)
-             └─ clarify ─────────────────────────────── done
-```
+![LangGraph agent workflow](planning/langgraph_flow.png)
+
+*Generated from the compiled graph by `planning/generate_graph_diagram.py`, which reads
+the nodes and edges out of `build_graph(...).get_graph()` and refuses to run if the graph
+gains a node the diagram doesn't know about — so the picture can't drift from the code.*
 
 - **Coordinator** — picks one of five routes and rewrites the question into
   self-contained search queries using conversation history, so follow-ups like
