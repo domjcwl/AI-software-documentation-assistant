@@ -1,0 +1,18 @@
+# Base theme only. The real palette is injected as CSS at runtime by
+# frontend/theme.py, which is what makes the light/dark toggle possible —
+# Streamlit's own theme can't be changed without a restart. These values
+# match the dark palette so there's no white flash before CSS applies.
+
+[theme]
+base = "dark"
+primaryColor = "#10a37f"
+backgroundColor = "#212121"
+secondaryBackgroundColor = "#171717"
+textColor = "#ececec"
+font = "sans serif"
+
+[client]
+toolbarMode = "minimal"
+
+[browser]
+gatherUsageStats = false
